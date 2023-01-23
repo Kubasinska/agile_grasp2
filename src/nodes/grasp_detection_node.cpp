@@ -95,7 +95,7 @@ void GraspDetectionNode::run()
 }
 
 void writeGrasps(std::vector<GraspHypothesis> hands) {
-  std::ofstream output_file("/handpose.txt");
+  std::ofstream output_file("/workspace/cache/handpose.txt");
 
   for (int i = 0; i < hands.size(); i++)
   {
