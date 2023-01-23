@@ -115,6 +115,8 @@ void writeGrasps(std::vector<GraspHypothesis> hands) {
     this_handle.push_back(hands[i].getBinormal().transpose()[0]);
     this_handle.push_back(hands[i].getBinormal().transpose()[1]);
     this_handle.push_back(hands[i].getBinormal().transpose()[2]);
+    float f = (float) hands[i].getGraspWidth();
+    this_handle.push_back(f);
     std::cout << "Hand " << i << std::endl;
     std::cout << " bottom: " << hands[i].getGraspBottom().transpose() << std::endl;
     std::cout << " surface: " << hands[i].getGraspSurface().transpose() << std::endl;
