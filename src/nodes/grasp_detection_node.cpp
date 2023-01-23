@@ -94,6 +94,41 @@ void GraspDetectionNode::run()
   }
 }
 
+void writeGrasps(std::vector<GraspHypothesis> hands) {
+  std::ofstream output_file("/handpose.txt");
+
+  for (int i = 0; i < hands.size(); i++)
+  {
+    std::vector<float> this_handle;
+    this_handle.push_back(hands[i].getGraspBottom().transpose()[0]);
+    this_handle.push_back(hands[i].getGraspBottom().transpose()[1]);
+    this_handle.push_back(hands[i].getGraspBottom().transpose()[2]);
+    this_handle.push_back(hands[i].getGraspSurface().transpose()[0]);
+    this_handle.push_back(hands[i].getGraspSurface().transpose()[1]);
+    this_handle.push_back(hands[i].getGraspSurface().transpose()[2]);
+    this_handle.push_back(hands[i].getAxis().transpose()[0]);
+    this_handle.push_back(hands[i].getAxis().transpose()[1]);
+    this_handle.push_back(hands[i].getAxis().transpose()[2]);
+    this_handle.push_back(hands[i].getApproach().transpose()[0]);
+    this_handle.push_back(hands[i].getApproach().transpose()[1]);
+    this_handle.push_back(hands[i].getApproach().transpose()[2]);
+    this_handle.push_back(hands[i].getBinormal().transpose()[0]);
+    this_handle.push_back(hands[i].getBinormal().transpose()[1]);
+    this_handle.push_back(hands[i].getBinormal().transpose()[2]);
+    this_handle.push_back(hands[i].getGraspWidth().transpose()[0]);
+    std::cout << "Hand " << i << std::endl;
+    std::cout << " bottom: " << hands[i].getGraspBottom().transpose() << std::endl;
+    std::cout << " surface: " << hands[i].getGraspSurface().transpose() << std::endl;
+    std::cout << " axis: " << hands[i].getAxis().transpose() << std::endl;
+    std::cout << " approach: " << hands[i].getApproach().transpose() <<std::endl;
+    std::cout << " binormal: " << hands[i].getBinormal().transpose() << std::endl;
+    std::cout << " width: " << hands[i].getGraspWidth() << std::endl;
+
+    std::ostream_iterator<float> output_iterator(output_file, "\n");
+    std::copy(this_handle.begin(), this_handle.end(), output_iterator);
+  }
+}
+
 
 std::vector<GraspHypothesis> GraspDetectionNode::detectGraspPosesInFile(const std::string& file_name_left,
   const std::string& file_name_right)
@@ -115,7 +150,7 @@ std::vector<GraspHypothesis> GraspDetectionNode::detectGraspPosesInFile(const st
     grasps = grasp_detector_->detectGraspPoses(*cloud_cam);
 
   delete cloud_cam;
-
+  writeGrasps(grasps);
   return grasps;
 }
 
